@@ -7,9 +7,9 @@ import java.util.function.BiConsumer;
 
 public final class Command {
     public static String prefix = "!";
-    protected final String name;
-    protected final String[] aliases;
-    protected final String usage;
+    private final String name;
+    private final String[] aliases;
+    private final String usage;
     private final BiConsumer<String[], Event> consumer;
 
     private Command(String name, String[] aliases, String usage, BiConsumer<String[], Event> consumer) {
@@ -19,15 +19,25 @@ public final class Command {
         this.consumer = consumer;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String[] getAliases() {
+        return aliases;
+    }
+
+    public String getUsage() {
+        return prefix + usage;
+    }
+
     public static void parse(String message, Event event) {
         if (message.startsWith(prefix)) {
             message = message.substring(prefix.length());
             String[] split = message.split(" ");
             CommandRegistry.getSet().stream()
                     .filter(command -> Arrays.stream(command.aliases).anyMatch(split[0]::equalsIgnoreCase))
-                    .forEach(command -> {
-                        command.consumer.accept(Arrays.copyOfRange(split, 1, split.length), event);
-                    });
+                    .forEach(command -> command.consumer.accept(Arrays.copyOfRange(split, 1, split.length), event));
         }
     }
 
