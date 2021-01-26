@@ -6,9 +6,7 @@ public class Main extends ListenerAdapter {
     public static void main(String[] args) throws LoginException {
         JDABuilder.createDefault("").addEventListeners(new Main()).build();
         
-        Command.create("Say", new String[]{"say"}, "say <message>", (arguments, event) ->
-                ((MessageReceivedEvent) event).getChannel().sendMessage(String.join(" ", arguments)).queue()
-        ).register();
+        Command.create("Say", new String[]{"say"}, "say <message>", (arguments, event) -> ((MessageReceivedEvent) event).getChannel().sendMessage(String.join(" ", arguments)).queue()).register();
 
         Command.create("Prefix", new String[]{"prefix", "p"}, "prefix <character>", (arguments, event) -> {
             if (arguments.length == 1) {
