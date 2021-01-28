@@ -2,7 +2,19 @@
 
 <p align="center">A Command library for <a href="https://github.com/DV8FromTheWorld/JDA">JDA</a> using java 8 lambdas</p>
 
-### Example Usage:
+### Usage
+
+Create a command using `Command.create`
+```java
+Command cmd = Command.create(name, aliases, usage, BiConsumer);
+```
+Then register it with `Command.register` or unregister it using `Command.unregister();`
+```java
+cmd.register();
+cmd.unregister();
+```
+
+### Example
 ```java
 public class Main extends ListenerAdapter {
     public static void main(String[] args) throws LoginException {
