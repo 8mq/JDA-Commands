@@ -6,30 +6,18 @@
 
 Create a command using `Command.create`
 ```java
-Command cmd = Command.create(name, aliases, usage, BiConsumer);
-```
-Then register it with `Command.register` or unregister it using `Command.unregister();`
-```java
-cmd.register();
-cmd.unregister();
+Command cmd = Command.create(biConsumer, name, usage, aliases);
 ```
 
 ### Example
 ```java
 public class Main extends ListenerAdapter {
+    Command say = Command.create((arguments, event) -> {
+        event.getChannel().sendMessage(String.join(" ", arguments)).queue();
+    }, "Say", "say <message>", "say");
+
     public static void main(String[] args) throws LoginException {
         JDABuilder.createDefault("").addEventListeners(new Main()).build();
-        
-        Command.create("Say", new String[]{"say"}, "say <message>", (arguments, event) -> 
-                ((MessageReceivedEvent) event).getChannel().sendMessage(String.join(" ", arguments)).queue()
-        ).register();
-
-        Command.create("Prefix", new String[]{"prefix", "p"}, "prefix <character>", (arguments, event) -> {
-            if (arguments.length == 1) {
-                Command.prefix = arguments[0];
-                ((MessageReceivedEvent) event).getChannel().sendMessage("Prefix set to " + arguments[0]).queue();
-            } else ((MessageReceivedEvent) event).getChannel().sendMessage("Wrong syntax").queue();
-        }).register();
     }
 
     @Override
@@ -54,7 +42,7 @@ public class Main extends ListenerAdapter {
 <dependency>
 	<groupId>com.github.8mq</groupId>
 	<artifactId>JDA-Commands</artifactId>
-	<version>1.0</version>
+	<version>VERSION</version>
 </dependency>
 ```
 
@@ -66,7 +54,8 @@ repositories {
 ```
 ```gradle
 dependencies {
-	implementation 'com.github.8mq:JDA-Commands:1.0'
+	implementation 'com.github.8mq:JDA-Commands:VERSION'
 }
 ```
 
+Replace `VERSION` with the latest version.

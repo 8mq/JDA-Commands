@@ -1,6 +1,6 @@
 package me.meow.commands;
 
-import net.dv8tion.jda.api.events.Event;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -14,9 +14,9 @@ public final class Command {
     public final String name;
     public final String[] aliases;
     public final String usage;
-    public final BiConsumer<String[], Event> consumer;
+    public final BiConsumer<String[], MessageReceivedEvent> consumer;
 
-    private Command(BiConsumer<String[], Event> consumer, String name, String usage, String... aliases) {
+    private Command(BiConsumer<String[], MessageReceivedEvent> consumer, String name, String usage, String... aliases) {
         this.consumer = consumer;
         this.name = name;
         this.usage = usage;
@@ -25,7 +25,7 @@ public final class Command {
         register();
     }
 
-    public static Command create(BiConsumer<String[], Event> consumer, String name, String usage, String... aliases) {
+    public static Command create(BiConsumer<String[], MessageReceivedEvent> consumer, String name, String usage, String... aliases) {
         return new Command(consumer, name, usage, aliases);
     }
 
@@ -37,7 +37,7 @@ public final class Command {
         commands.remove(this);
     }
 
-    public static void parse(String message, Event event) {
+    public static void parse(String message, MessageReceivedEvent event) {
         if (message.startsWith(prefix)) {
             message = message.substring(prefix.length());
             String[] split = message.split(" ");
