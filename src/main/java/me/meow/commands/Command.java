@@ -16,17 +16,17 @@ public final class Command {
     public final String usage;
     public final BiConsumer<String[], Event> consumer;
 
-    private Command(String name, String[] aliases, String usage, BiConsumer<String[], Event> consumer) {
-        this.name = name;
-        this.aliases = aliases;
-        this.usage = usage;
+    private Command(BiConsumer<String[], Event> consumer, String name, String usage, String... aliases) {
         this.consumer = consumer;
+        this.name = name;
+        this.usage = usage;
+        this.aliases = aliases;
 
         register();
     }
 
-    public static Command create(String name, String[] aliases, String usage, BiConsumer<String[], Event> consumer) {
-        return new Command(name, aliases, usage, consumer);
+    public static Command create(BiConsumer<String[], Event> consumer, String name, String usage, String... aliases) {
+        return new Command(consumer, name, usage, aliases);
     }
 
     public void register() {
